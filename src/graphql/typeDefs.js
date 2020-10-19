@@ -32,6 +32,6 @@ module.exports = gql`
     }
 
     type Subscription {
-        nuevoMensaje: [Mensaje]
+        nuevoMensaje(usuario_id: ID!): Mensaje
     }
 `;

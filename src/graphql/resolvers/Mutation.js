@@ -38,12 +38,9 @@ module.exports = {
             const mensaje = new Mensaje({ mensaje: texto, de, para });
             await mensaje.save();
 
-            const mensajes = await Mensaje.find().or([
-                { de: de },
-                { para: de },
-            ]);
+            await Mensaje.find().or([{ de: de }, { para: de }]);
 
-            pubsub.publish(NUEVO_MENSAJE, { nuevoMensaje: mensajes });
+            pubsub.publish(NUEVO_MENSAJE, { nuevoMensaje: mensaje });
 
             return {
                 estado: "Mensaje enviado correctamente",
