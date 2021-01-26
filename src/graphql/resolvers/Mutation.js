@@ -1,6 +1,6 @@
 const Usuario = require("../../models/usuario");
 const Mensaje = require("../../models/mensaje");
-const { NUEVO_MENSAJE } = require("./constants");
+const { NUEVO_MENSAJE } = require("../constants");
 
 const verifyLength = (str) => str.length > 0;
 
