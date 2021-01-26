@@ -23,8 +23,14 @@ module.exports = gql`
         usuarios: [Usuario]
     }
 
+    input EnviarMensageInput {
+        mensaje: String!
+        de: ID!
+        para: ID!
+    }
+
     type Mutation {
-        enviarMensaje(mensaje: String!, de: ID!, para: ID!): JSON
+        enviarMensaje(input: EnviarMensageInput!): JSON
     }
 
     extend type Mutation {

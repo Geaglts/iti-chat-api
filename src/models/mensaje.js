@@ -3,6 +3,8 @@ const { Schema, model } = require("mongoose");
 const schemaMensaje = new Schema({
     mensaje: {
         type: String,
+        trim: true,
+        required: true,
     },
     de: {
         type: Schema.Types.ObjectId,

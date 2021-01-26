@@ -22,31 +22,22 @@ module.exports = {
             console.log(err);
         }
     },
-    async enviarMensaje(_, { mensaje: texto, de, para }, { pubsub }) {
+    async enviarMensaje(_, { input }, { pubsub }) {
         try {
-            if (
-                !verifyLength(texto) ||
-                !verifyLength(de) ||
-                !verifyLength(para)
-            ) {
-                return {
-                    estado:
-                        "No es posible hacer nada, mande los datos correctos",
-                };
-            }
-
-            const mensaje = new Mensaje({ mensaje: texto, de, para });
+            const mensaje = new Mensaje(input);
             await mensaje.save();
-
-            await Mensaje.find().or([{ de: de }, { para: de }]);
-
+            await Mensaje.find().or([
+                { de: input.de },
+                { para: input.de },
+            ]);
             pubsub.publish(NUEVO_MENSAJE, { nuevoMensaje: mensaje });
-
             return {
-                estado: "Mensaje enviado correctamente",
+                estado: "Mensaje enviado correctamente.",
             };
         } catch (err) {
-            console.log(err);
+            return {
+                estado: "No se pudo enviar el mensaje.",
+            };
         }
     },
 };
