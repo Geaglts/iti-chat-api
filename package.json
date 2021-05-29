@@ -17,6 +17,10 @@
     "dev": "nodemon -e js,graphql,json index.js",
     "start": "node index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Geaglts/test-messages-graphql.git"
+  },
   "devDependencies": {
     "install-peers": "^1.0.3"
   }
