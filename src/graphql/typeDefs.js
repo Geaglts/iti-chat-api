@@ -1,43 +1,43 @@
-const gql = require("graphql-tag");
+const gql = require('graphql-tag');
 
 module.exports = gql`
-    scalar JSON
+  scalar JSON
 
-    type Usuario {
-        id: ID!
-        nombre: String!
-        mensajes: [Mensaje]
-    }
+  type User {
+    id: ID!
+    name: String!
+    messages: [Message]
+  }
 
-    type Mensaje {
-        id: ID!
-        mensaje: String!
-        de: Usuario
-        para: Usuario
-    }
+  type Message {
+    id: ID!
+    message: String!
+    from: User
+    to: User
+  }
 
-    type Query {
-        _: Boolean
-        info: JSON
-        misDatos(nombre: String): Usuario
-        usuarios: [Usuario]
-    }
+  input EnviarMensageInput {
+    message: String!
+    from: ID!
+    to: ID!
+  }
 
-    input EnviarMensageInput {
-        mensaje: String!
-        de: ID!
-        para: ID!
-    }
+  type Query {
+    _: Boolean
+    info: JSON
+    misDatos(name: String): User
+    usuarios: [User]
+  }
 
-    type Mutation {
-        enviarMensaje(input: EnviarMensageInput!): JSON
-    }
+  type Mutation {
+    enviarMensaje(input: EnviarMensageInput!): JSON
+  }
 
-    extend type Mutation {
-        crearUsuario(nombre: String!): JSON
-    }
+  extend type Mutation {
+    crearUsuario(nombre: String!): JSON
+  }
 
-    type Subscription {
-        nuevoMensaje(usuario_id: ID!): Mensaje
-    }
+  type Subscription {
+    nuevoMensaje(usuario_id: ID!): Message
+  }
 `;

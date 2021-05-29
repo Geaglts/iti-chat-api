@@ -1,34 +1,34 @@
-const Usuario = require("../../models/usuario");
-const Mensaje = require("../../models/mensaje");
+const Usuario = require('../../models/user');
+const Mensaje = require('../../models/message');
 
 module.exports = {
-    Mensaje: {
-        async de(parent) {
-            try {
-                return await Usuario.findById(parent.de);
-            } catch (err) {
-                console.log(err);
-            }
-        },
-        async para(parent) {
-            try {
-                return await Usuario.findById(parent.para);
-            } catch (err) {
-                console.log(err);
-            }
-        },
+  Message: {
+    async from(parent) {
+      try {
+        return await Usuario.findById(parent.from);
+      } catch (err) {
+        console.log(err);
+      }
     },
-    Usuario: {
-        async mensajes(parent) {
-            try {
-                const mensajes = await Mensaje.find().or([
-                    { de: parent.id },
-                    { para: parent.id },
-                ]);
-                return mensajes;
-            } catch (err) {
-                console.log(err);
-            }
-        },
+    async to(parent) {
+      try {
+        return await Usuario.findById(parent.to);
+      } catch (err) {
+        console.log(err);
+      }
     },
+  },
+  User: {
+    async messages(parent) {
+      try {
+        const mensajes = await Mensaje.find().or([
+          { from: parent.id },
+          { to: parent.id },
+        ]);
+        return mensajes;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
 };

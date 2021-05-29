@@ -1,10 +1,8 @@
-const { app, server, httpServer } = require("./server");
-require("./database");
+const { app, httpServer } = require('./server');
+require('./lib/mongo');
 
-httpServer.listen(app.get("port"), () => {
-    console.log(
-        `El servidor esta corriendo en http://localhost:${app.get(
-            "port"
-        )}${server.graphqlPath}`
-    );
+const PORT = app.get('port');
+
+httpServer.listen(app.get('port'), () => {
+  console.log(`Server listening on port ${PORT}`);
 });

@@ -1,5 +1,6 @@
 {
-    "tabWidth": 4,
+    "tabWidth": 2,
     "semi": true,
-    "printWidth": 75
+    "printWidth": 75,
+    "singleQuote": true
 }

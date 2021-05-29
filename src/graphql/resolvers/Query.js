@@ -1,32 +1,33 @@
-const Usuario = require("../../models/usuario");
-const Mensaje = require("../../models/mensaje");
+const User = require('../../models/user');
+const Mensaje = require('../../models/message');
 
 const verifyLength = (str) => str.length > 0;
 
 module.exports = {
-    info() {
+  info() {
+    return {
+      mensaje: 'Welcome to iti-chat-graphql-api',
+    };
+  },
+  async misDatos(_, { name }) {
+    try {
+      if (!verifyLength(name)) {
         return {
-            mensaje: "Este es el servidor de la app incognito",
+          message: 'The name is required',
         };
-    },
-    async misDatos(_, { nombre }) {
-        try {
-            if (!verifyLength(nombre)) {
-                return {
-                    estado: "El nombre es requerido",
-                };
-            }
+      }
 
-            return await Usuario.findOne({ nombre });
-        } catch (err) {
-            console.log(err);
-        }
-    },
-    async usuarios() {
-        try {
-            return await Usuario.find();
-        } catch (err) {
-            console.log(err);
-        }
-    },
+      return await User.findOne({ name });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  async usuarios() {
+    try {
+      const data = await User.find().select(['-messages']);
+      return data;
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
