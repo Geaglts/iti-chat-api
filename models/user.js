@@ -5,6 +5,25 @@ const userSchema = new Schema({
     type: String,
     unique: true,
   },
+  phone: {
+    type: String,
+    unique: true,
+    trim: true,
+  },
+  active: {
+    type: Boolean,
+    default: true,
+  },
+  contacts: [
+    {
+      alias: {
+        type: String,
+      },
+      userId: {
+        type: Schema.Types.ObjectId,
+      },
+    },
+  ],
   messages: [
     {
       type: Schema.Types.ObjectId,

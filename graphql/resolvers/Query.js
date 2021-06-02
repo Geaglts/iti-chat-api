@@ -1,7 +1,4 @@
 const User = require('../../models/user');
-const Mensaje = require('../../models/message');
-
-const verifyLength = (str) => str.length > 0;
 
 module.exports = {
   info() {
@@ -23,6 +20,14 @@ module.exports = {
       return data;
     } catch (err) {
       console.log(err);
+    }
+  },
+  async verificarCuenta(_, { phone }) {
+    try {
+      const userExists = await User.findOne({ phone });
+      return userExists._id;
+    } catch (error) {
+      return null;
     }
   },
 };

@@ -2,20 +2,22 @@ const User = require('../../models/user');
 const Message = require('../../models/message');
 const { NUEVO_MENSAJE } = require('../constants');
 
-const verifyLength = (str) => str.length > 0;
+const getTimeNow = require('../../utils/getTimeNow');
 
 module.exports = {
-  async crearUsuario(_, { nombre }) {
+  async crearUsuario(_, { input }) {
     try {
-      if (!verifyLength(nombre)) {
-        return {
-          estado: 'Es necesario que des esto',
-        };
+      const { contacts, ...rest } = input;
+      let contactsWithUser = [];
+      // Find users
+      for ({ alias, phone } of contacts) {
+        const userExists = await User.findOne({ phone });
+        if (userExists) {
+          contactsWithUser.push({ alias, userId: userExists._id });
+        }
       }
-
-      const newUser = await User({ name: nombre });
+      const newUser = await User({ ...rest, contacts: contactsWithUser });
       await newUser.save();
-
       return newUser;
     } catch (err) {
       console.log(err);
@@ -23,16 +25,17 @@ module.exports = {
   },
   async enviarMensaje(_, { input }, { pubsub }) {
     try {
-      const mensaje = new Message(input);
+      const time = getTimeNow();
+      const mensaje = new Message({ ...input, time });
       await mensaje.save();
       await Message.find().or([{ from: input.de }, { to: input.de }]);
       pubsub.publish(NUEVO_MENSAJE, { nuevoMensaje: mensaje });
       return {
-        estado: 'Mensaje enviado correctamente.',
+        estado: true,
       };
     } catch (err) {
       return {
-        estado: 'No se pudo enviar el mensaje.',
+        estado: false,
       };
     }
   },

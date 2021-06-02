@@ -6,6 +6,10 @@ const messageSchema = new Schema({
     trim: true,
     required: true,
   },
+  time: {
+    type: String,
+    required: true,
+  },
   from: {
     type: Schema.Types.ObjectId,
     ref: 'Usuario',
