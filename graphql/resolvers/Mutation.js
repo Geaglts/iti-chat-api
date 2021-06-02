@@ -16,9 +16,7 @@ module.exports = {
       const newUser = await User({ name: nombre });
       await newUser.save();
 
-      return {
-        estado: 'Usuario creado correctamente',
-      };
+      return newUser;
     } catch (err) {
       console.log(err);
     }

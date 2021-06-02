@@ -9,15 +9,10 @@ module.exports = {
       mensaje: 'Welcome to iti-chat-graphql-api',
     };
   },
-  async misDatos(_, { name }) {
+  async misDatos(_, { id }) {
     try {
-      if (!verifyLength(name)) {
-        return {
-          message: 'The name is required',
-        };
-      }
-
-      return await User.findOne({ name });
+      const user = await User.findById(id);
+      return user;
     } catch (err) {
       console.log(err);
     }

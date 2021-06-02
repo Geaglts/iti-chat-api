@@ -25,7 +25,7 @@ module.exports = gql`
   type Query {
     _: Boolean
     info: JSON
-    misDatos(name: String): User
+    misDatos(id: ID!): User
     usuarios: [User]
   }
 
@@ -34,7 +34,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    crearUsuario(nombre: String!): JSON
+    crearUsuario(nombre: String!): User
   }
 
   type Subscription {
