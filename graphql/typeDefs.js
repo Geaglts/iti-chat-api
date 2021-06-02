@@ -50,6 +50,7 @@ module.exports = gql`
   }
 
   extend type Query {
+    getMessages(userId: ID!, contactId: ID!): [Message]
     verificarCuenta(phone: String!): ID
   }
 
