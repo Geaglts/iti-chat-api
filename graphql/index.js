@@ -12,7 +12,8 @@ module.exports = new ApolloServer({
   subscriptions: {
     onConnect: () => console.log('Connected to WS'),
   },
-  playground: config.dev ? true : false,
+  //playground: config.dev ? true : false,
+  playground: true,
   introspection: true,
   context: (req, res) => ({ req, res, pubsub }),
 });
