@@ -42,6 +42,11 @@ module.exports = gql`
     to: ID!
   }
 
+  input UpdateContactsInput {
+    userId: ID!
+    contacts: [ContactInput]
+  }
+
   type Query {
     _: Boolean
     info: JSON
@@ -60,6 +65,7 @@ module.exports = gql`
 
   extend type Mutation {
     crearUsuario(input: NewUserInput!): User
+    updateContacts(input: UpdateContactsInput!): Boolean!
   }
 
   type Subscription {
