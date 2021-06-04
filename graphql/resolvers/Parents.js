@@ -53,14 +53,12 @@ module.exports = {
     },
     async lastMessage(parent) {
       try {
-        console.log(parent);
         const messages = await Message.find({
           $or: [
             { to: parent.myId, from: parent.userId },
             { from: parent.myId, to: parent.userId },
           ],
         }).sort([['_id', -1]]);
-        console.log(messages);
         if (messages.length > 1) {
           return messages[0].message;
         }
