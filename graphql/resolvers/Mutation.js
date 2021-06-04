@@ -46,21 +46,23 @@ module.exports = {
         contacts: 1,
       });
       if (!user) return false;
+      user.contacts = [];
       for (let contact of input.contacts) {
         const { alias, phone } = contact;
         // ¿El usuario tiene cuenta?
         const userHasAccount = await User.findOne({ phone }).select({
           _id: 1,
         });
-        if (!userHasAccount) return false;
-        // ¿El usaurio ya esta agregado?
-        const userRegister = user.contacts.some((contact) => {
-          return String(contact.userId) === String(userHasAccount._id);
-        });
-        // Si el usuario no esta registrado, agregalo
-        if (!userRegister) {
-          user.contacts.push({ alias, userId: userHasAccount._id });
-          await user.save();
+        if (userHasAccount) {
+          // ¿El usaurio ya esta agregado?
+          const userRegister = user.contacts.some((contact) => {
+            return String(contact.userId) === String(userHasAccount._id);
+          });
+          // Si el usuario no esta registrado, agregalo
+          if (!userRegister) {
+            user.contacts.push({ alias, userId: userHasAccount._id });
+            await user.save();
+          }
         }
       }
       return true;

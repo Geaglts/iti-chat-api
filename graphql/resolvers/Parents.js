@@ -30,6 +30,17 @@ module.exports = {
         console.log(err);
       }
     },
+    async contacts(parent) {
+      try {
+        const newContactsFormat = parent.contacts.map((contact) => {
+          const { _id, ...rest } = contact.toJSON();
+          return { id: _id, ...rest, myId: parent._id };
+        });
+        return newContactsFormat;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   Contact: {
     async user(parent) {
@@ -38,6 +49,25 @@ module.exports = {
         return user;
       } catch (error) {
         console.log(error);
+      }
+    },
+    async lastMessage(parent) {
+      try {
+        console.log(parent);
+        const messages = await Message.find({
+          $or: [
+            { to: parent.myId, from: parent.userId },
+            { from: parent.myId, to: parent.userId },
+          ],
+        }).sort([['_id', -1]]);
+        console.log(messages);
+        if (messages.length > 1) {
+          return messages[0].message;
+        }
+        return null;
+      } catch (error) {
+        console.log(error);
+        return null;
       }
     },
   },

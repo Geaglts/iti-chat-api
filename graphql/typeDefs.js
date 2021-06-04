@@ -7,6 +7,7 @@ module.exports = gql`
     id: ID!
     alias: String!
     user: User
+    lastMessage: String
   }
 
   type User {
