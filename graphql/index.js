@@ -1,10 +1,12 @@
-const { ApolloServer, PubSub } = require('apollo-server-express');
+const { join } = require('path');
+const { readFileSync } = require('fs');
+const { ApolloServer } = require('apollo-server-express');
 const resolvers = require('./resolvers');
-const typeDefs = require('./typeDefs');
+const typeDefsPath = join(__dirname, 'typeDefs.graphql');
+const typeDefs = readFileSync(typeDefsPath, 'utf-8');
+const context = require('./context');
 
 const { config } = require('../config');
-
-const pubsub = new PubSub();
 
 module.exports = new ApolloServer({
   typeDefs,
@@ -15,5 +17,5 @@ module.exports = new ApolloServer({
   //playground: config.dev ? true : false,
   playground: true,
   introspection: true,
-  context: (req, res) => ({ req, res, pubsub }),
+  context,
 });

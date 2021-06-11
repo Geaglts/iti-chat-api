@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const { hour, date } = require('../utils/getTimeNow');
 
 const messageSchema = new Schema({
   message: {
@@ -6,18 +7,37 @@ const messageSchema = new Schema({
     trim: true,
     required: true,
   },
-  time: {
+  hour: {
     type: String,
     required: true,
   },
+  date: {
+    type: String,
+    required: true,
+  },
+  state: {
+    type: Number,
+    required: true,
+    default: 1,
+  },
   from: {
     type: Schema.Types.ObjectId,
-    ref: 'Usuario',
+    ref: 'User',
   },
   to: {
     type: Schema.Types.ObjectId,
-    ref: 'Usuario',
+    ref: 'User',
   },
 });
 
-module.exports = model('Message', messageSchema, 'messages');
+messageSchema.pre('save', function (next) {
+  if (this.isNew) {
+    this.hour = hour;
+    this.date = date;
+  }
+  next();
+});
+
+const messageModel = model('Message', messageSchema, 'messages');
+
+module.exports = messageModel;

@@ -1,0 +1,81 @@
+scalar JSON
+
+# Types
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  phone: String!
+  active: Boolean!
+  token: String!
+  contacts: [Contact]
+  messages: [Message]
+}
+
+type Message {
+  id: ID!
+  message: String!
+  time: String!
+  date: String!
+  from: User
+  to: User
+}
+
+type Contact {
+  id: ID!
+  alias: String!
+  status: Int!
+  phone: String!
+  user: User
+  lastMessage: String
+}
+
+# Inputs
+input NewUserInput {
+  name: String
+  email: String!
+  phone: String!
+  contacts: [ContactInput]
+}
+
+input EnviarMensageInput {
+  message: String!
+  from: ID!
+  to: ID!
+}
+
+input UpdateContactsInput {
+  userId: ID!
+  contacts: [ContactInput]
+}
+
+input ContactInput {
+  alias: String!
+  phone: String!
+}
+
+# Query
+type Query {
+  _: Boolean
+  info: JSON
+  # Trae la información de un usuario
+  me: User
+  # Trae a todos los usuarios
+  users: [User]
+  # Trae los mensajes de un usuario con otro
+  getMessages(contactId: ID!): [Message]
+  verificarCuenta(phone: String!): ID
+}
+
+# Mutation
+type Mutation {
+  # Envía un mensaje a otro usuario
+  sendMessage(input: EnviarMensageInput!): JSON
+  createUser(input: NewUserInput!): User!
+  updateContacts(input: UpdateContactsInput!): Boolean!
+}
+
+# Subscriptions
+type Subscription {
+  nuevoMensaje(usuario_id: ID!): Message
+}

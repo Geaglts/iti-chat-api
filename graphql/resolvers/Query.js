@@ -7,15 +7,15 @@ module.exports = {
       mensaje: 'Welcome to iti-chat-graphql-api',
     };
   },
-  async misDatos(_, { id }) {
+  async me(_, __, { user }) {
     try {
-      const user = await User.findById(id);
+      if (!user) return null;
       return user;
     } catch (err) {
-      console.log(err);
+      throw new Error(err);
     }
   },
-  async usuarios() {
+  async users() {
     try {
       const data = await User.find().select(['-messages']);
       return data;
@@ -23,31 +23,25 @@ module.exports = {
       console.log(err);
     }
   },
+  async getMessages(_, { contactId }, { user }) {
+    try {
+      if (!user) return null;
+      const messages = await Message.find({
+        $and: [
+          { $or: [{ to: user._id }, { from: user._id }] },
+          { $or: [{ to: contactId }, { from: contactId }] },
+        ],
+      }).sort([['_id', 1]]);
+      return messages;
+    } catch (error) {
+      return null;
+    }
+  },
   async verificarCuenta(_, { phone }) {
     try {
       const userExists = await User.findOne({ phone });
       return userExists._id;
     } catch (error) {
-      return null;
-    }
-  },
-  async getMessages(_, { userId, contactId }) {
-    try {
-      const messages = await Message.find({
-        $or: [
-          {
-            to: userId,
-            from: contactId,
-          },
-          {
-            to: contactId,
-            from: userId,
-          },
-        ],
-      }).sort([['_id', 1]]);
-      return messages;
-    } catch (error) {
-      console.log(error);
       return null;
     }
   },

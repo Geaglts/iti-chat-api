@@ -7,6 +7,7 @@ const config = {
   dbPassword: process.env.DB_PASSWORD || '',
   dbHost: process.env.DB_HOST || 'localhost',
   dbName: process.env.DB_NAME || 'iti-chat-db',
+  publicJwtSecret: process.env.PUBLIC_JWT_SECRET || 'secret',
 };
 
 module.exports = { config };

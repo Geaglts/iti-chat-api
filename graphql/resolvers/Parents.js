@@ -30,22 +30,26 @@ module.exports = {
         console.log(err);
       }
     },
-    async contacts(parent) {
+    async contacts(parent, _, { user }) {
       try {
-        const newContactsFormat = parent.contacts.map((contact) => {
-          const { _id, ...rest } = contact.toJSON();
-          return { id: _id, ...rest, myId: parent._id };
-        });
-        return newContactsFormat;
+        const isMainUser = String(user._id) === String(parent._id);
+        if (isMainUser) {
+          const newContactsFormat = parent.contacts.map((contact) => {
+            const { _id, ...rest } = contact.toJSON();
+            return { id: _id, ...rest, myId: parent._id };
+          });
+          return newContactsFormat;
+        }
+        return [];
       } catch (error) {
-        console.log(error);
+        return [];
       }
     },
   },
   Contact: {
     async user(parent) {
       try {
-        const user = await User.findById(parent.userId);
+        const user = await User.findOne({ phone: parent.phone });
         return user;
       } catch (error) {
         console.log(error);
