@@ -4,6 +4,7 @@ const userSchema = new Schema({
   name: {
     type: String,
     unique: true,
+    trim: true,
   },
   phone: {
     type: String,

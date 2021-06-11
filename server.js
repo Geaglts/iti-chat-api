@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-  res.json({ mensaje: 'Welcome to iti-chat-api' });
+  res.json({ message: 'Welcome to iti-chat-api', status: 'active' });
 });
 
 server.applyMiddleware({

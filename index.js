@@ -4,5 +4,5 @@ require('./lib/mongo');
 const PORT = app.get('port');
 
 httpServer.listen(app.get('port'), () => {
-  console.log(`Server listening on port ${PORT}`);
+  console.log(`Listening on port ${PORT}`);
 });
