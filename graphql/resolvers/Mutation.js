@@ -14,6 +14,17 @@ module.exports = {
       throw new Error(err);
     }
   },
+  async updateUser(_, { input }, { user }) {
+    try {
+      if (!user) return null;
+      const updatedUser = await User.findOneAndUpdate(user.userId, input, {
+        new: true,
+      });
+      return updatedUser;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
   async sendMessage(_, { input }, { pubsub }) {
     try {
       const time = getTimeNow();

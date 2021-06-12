@@ -38,6 +38,10 @@ input NewUserInput {
   contacts: [ContactInput]
 }
 
+input UpdateUserInput {
+  name: String!
+}
+
 input EnviarMensageInput {
   message: String!
   from: ID!
@@ -72,6 +76,8 @@ type Mutation {
   sendMessage(input: EnviarMensageInput!): JSON
   # Crea a un nuevo usuario
   createUser(input: NewUserInput!): User!
+  # Actualiza los datos de un usuario
+  updateUser(input: UpdateUserInput!): User!
   updateContacts(input: UpdateContactsInput!): Boolean!
   # Revisa si el usuario tiene una cuenta
   hasAccount(phone: String!): JSON
