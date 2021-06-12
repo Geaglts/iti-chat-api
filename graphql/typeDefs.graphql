@@ -64,15 +64,17 @@ type Query {
   users: [User]
   # Trae los mensajes de un usuario con otro
   getMessages(contactId: ID!): [Message]
-  verificarCuenta(phone: String!): ID
 }
 
 # Mutation
 type Mutation {
   # Envía un mensaje a otro usuario
   sendMessage(input: EnviarMensageInput!): JSON
+  # Crea a un nuevo usuario
   createUser(input: NewUserInput!): User!
   updateContacts(input: UpdateContactsInput!): Boolean!
+  # Revisa si el usuario tiene una cuenta
+  hasAccount(phone: String!): JSON
 }
 
 # Subscriptions

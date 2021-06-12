@@ -37,12 +37,4 @@ module.exports = {
       return null;
     }
   },
-  async verificarCuenta(_, { phone }) {
-    try {
-      const userExists = await User.findOne({ phone });
-      return userExists._id;
-    } catch (error) {
-      return null;
-    }
-  },
 };

@@ -61,4 +61,16 @@ module.exports = {
       return false;
     }
   },
+  async hasAccount(_, { phone }) {
+    try {
+      const userExists = await User.findOne({ phone }).select(['_id']);
+      if (userExists) {
+        return { userId: userExists._id, status: true };
+      } else {
+        return { status: false };
+      }
+    } catch {
+      return null;
+    }
+  },
 };
