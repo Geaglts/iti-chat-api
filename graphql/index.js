@@ -12,7 +12,11 @@ module.exports = new ApolloServer({
   typeDefs,
   resolvers,
   subscriptions: {
-    onConnect: () => console.log('Connected to WS'),
+    onConnect: (params, ws, context) => {
+      console.log('Connected to WS');
+      const newContext = { ...context, ...params };
+      return newContext;
+    },
   },
   //playground: config.dev ? true : false,
   playground: true,

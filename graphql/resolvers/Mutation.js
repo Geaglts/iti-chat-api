@@ -1,8 +1,6 @@
 const User = require('../../models/user');
 const Message = require('../../models/message');
-const { NUEVO_MENSAJE } = require('../constants');
-
-const getTimeNow = require('../../utils/getTimeNow');
+const { NEW_MESSAGE } = require('../constants');
 
 module.exports = {
   async createUser(_, { input }) {
@@ -25,12 +23,12 @@ module.exports = {
       throw new Error(error);
     }
   },
-  async sendMessage(_, { input }, { pubsub }) {
+  async sendMessage(_, { input }, { pubsub, user }) {
     try {
-      const time = getTimeNow();
-      const mensaje = new Message({ ...input, time });
-      await mensaje.save();
-      pubsub.publish(NUEVO_MENSAJE, { nuevoMensaje: mensaje });
+      if (!user) return null;
+      const message = new Message({ ...input, from: user._id });
+      await message.save();
+      pubsub.publish(NEW_MESSAGE, { newMessage: message });
       return {
         estado: true,
       };

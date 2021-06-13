@@ -19,26 +19,11 @@ module.exports = {
     },
   },
   User: {
-    async messages(parent) {
-      try {
-        const mensajes = await Message.find().or([
-          { from: parent.id },
-          { to: parent.id },
-        ]);
-        return mensajes;
-      } catch (err) {
-        console.log(err);
-      }
-    },
     async contacts(parent, _, { user }) {
       try {
         const isMainUser = String(user._id) === String(parent._id);
         if (isMainUser) {
-          const newContactsFormat = parent.contacts.map((contact) => {
-            const { _id, ...rest } = contact.toJSON();
-            return { id: _id, ...rest, myId: parent._id };
-          });
-          return newContactsFormat;
+          return parent.contacts;
         }
         return [];
       } catch (error) {
@@ -58,11 +43,11 @@ module.exports = {
     async lastMessage(parent) {
       try {
         const messages = await Message.find({
-          $or: [
-            { to: parent.myId, from: parent.userId },
-            { from: parent.myId, to: parent.userId },
+          $and: [
+            { $or: [{ to: user._id }, { from: user._id }] },
+            { $or: [{ to: contactId }, { from: contactId }] },
           ],
-        }).sort([['_id', -1]]);
+        }).sort([['_id', 1]]);
         if (messages.length > 1) {
           return messages[0].message;
         }

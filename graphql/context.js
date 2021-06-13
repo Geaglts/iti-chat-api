@@ -6,7 +6,12 @@ const pubsub = new PubSub();
 
 const context = async (req, res) => {
   try {
-    const authorization = req.req.headers.authorization;
+    let authorization = '';
+    if (req.connection) {
+      authorization = req.connection.context.authorization;
+    } else {
+      authorization = req.req.headers.authorization;
+    }
     const token = authorization.replace('Bearer ', '');
     const validToken = jwt.verify(token, config.publicJwtSecret);
     const user = await User.findById(validToken.userId);
@@ -24,7 +29,7 @@ const context = async (req, res) => {
       res,
       pubsub,
     };
-  } catch {
+  } catch (error) {
     return {
       req,
       res,

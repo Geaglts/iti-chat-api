@@ -9,14 +9,14 @@ type User {
   active: Boolean!
   token: String!
   contacts: [Contact]
-  messages: [Message]
 }
 
 type Message {
   id: ID!
   message: String!
-  time: String!
+  hour: String!
   date: String!
+  state: Int!
   from: User
   to: User
 }
@@ -43,9 +43,8 @@ input UpdateUserInput {
   name: String!
 }
 
-input EnviarMensageInput {
+input SendMessageInput {
   message: String!
-  from: ID!
   to: ID!
 }
 
@@ -73,7 +72,7 @@ type Query {
 # Mutation
 type Mutation {
   # Envía un mensaje a otro usuario
-  sendMessage(input: EnviarMensageInput!): JSON
+  sendMessage(input: SendMessageInput!): JSON
   # Crea a un nuevo usuario
   createUser(input: NewUserInput!): User!
   # Actualiza los datos de un usuario
@@ -86,5 +85,5 @@ type Mutation {
 
 # Subscriptions
 type Subscription {
-  nuevoMensaje(usuario_id: ID!): Message
+  newMessage: Message
 }

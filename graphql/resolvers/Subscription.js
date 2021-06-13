@@ -1,20 +1,19 @@
-const { NUEVO_MENSAJE } = require('../constants');
+const { NEW_MESSAGE } = require('../constants');
 const { withFilter } = require('apollo-server-express');
 
 module.exports = {
-  nuevoMensaje: {
+  newMessage: {
     subscribe: withFilter(
-      (parent, args, { pubsub }) => pubsub.asyncIterator(NUEVO_MENSAJE),
-      (payload, variables) => {
-        const mensaje = payload.nuevoMensaje;
-
+      (parent, args, { pubsub }) => pubsub.asyncIterator(NEW_MESSAGE),
+      (payload, variables, { user }) => {
+        if (!user) return false;
+        const mensaje = payload.newMessage;
         if (
-          String(mensaje.from) === variables.usuario_id ||
-          String(mensaje.to) === variables.usuario_id
+          String(mensaje.from) === String(user._id) ||
+          String(mensaje.to) === String(user._id)
         ) {
           return true;
         }
-
         return false;
       }
     ),

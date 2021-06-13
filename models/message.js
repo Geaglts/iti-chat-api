@@ -10,10 +10,12 @@ const messageSchema = new Schema({
   hour: {
     type: String,
     required: true,
+    default: '00:00 AM',
   },
   date: {
     type: String,
     required: true,
+    default: '00/00/0000',
   },
   state: {
     type: Number,

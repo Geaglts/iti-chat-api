@@ -1,3 +1,3 @@
-const NUEVO_MENSAJE = 'NUEVO_MENSAJE';
+const NEW_MESSAGE = 'NUEVO_MENSAJE';
 
-module.exports = { NUEVO_MENSAJE };
+module.exports = { NEW_MESSAGE };
