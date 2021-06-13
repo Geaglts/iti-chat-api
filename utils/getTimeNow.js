@@ -1,8 +1,11 @@
 const moment = require('moment-timezone');
 
-moment.tz.setDefault('America/Mexico_City');
+function getTimeNow() {
+  moment.tz.setDefault('America/Mexico_City');
+  return {
+    hour: moment().format('HH:mm:ss:SSSS'),
+    date: moment().format('L'),
+  };
+}
 
-module.exports = {
-  hour: moment().format('LT'),
-  date: moment().format('L'),
-};
+module.exports = getTimeNow;

@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose');
-const { hour, date } = require('../utils/getTimeNow');
+const getTimeNow = require('../utils/getTimeNow');
 
 const messageSchema = new Schema({
   message: {
@@ -34,6 +34,7 @@ const messageSchema = new Schema({
 
 messageSchema.pre('save', function (next) {
   if (this.isNew) {
+    const { hour, date } = getTimeNow();
     this.hour = hour;
     this.date = date;
   }

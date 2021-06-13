@@ -31,7 +31,10 @@ module.exports = {
           { $or: [{ to: user._id }, { from: user._id }] },
           { $or: [{ to: contactId }, { from: contactId }] },
         ],
-      }).sort([['_id', 1]]);
+      }).sort([
+        ['date', 1],
+        ['hour', 1],
+      ]);
       return messages;
     } catch (error) {
       return null;
