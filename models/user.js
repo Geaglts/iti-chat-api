@@ -61,7 +61,6 @@ const userSchema = new Schema(
       {
         alias: {
           type: String,
-          unique: [true, generateErrorMessage('contacto')],
           required: [true, generateErrorMessage('contacto', 'required')],
         },
         status: {
@@ -70,6 +69,7 @@ const userSchema = new Schema(
         },
         phone: {
           type: String,
+          required: [true, generateErrorMessage('contacto', 'required')],
         },
       },
     ],
@@ -114,11 +114,6 @@ userSchema.pre('save', async function (next) {
             contactsWithUser.push(contact);
           }
         }
-        userExists.contacts.push({
-          alias: this.name,
-          phone: this.phone,
-        });
-        await userExists.save();
       }
       this.contacts = contactsWithUser;
     }

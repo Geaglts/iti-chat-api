@@ -76,7 +76,6 @@ module.exports = {
         if (matchPassword) {
           await userExists.save();
           return {
-            userId: userExists._id,
             token: userExists.token,
             status: true,
           };

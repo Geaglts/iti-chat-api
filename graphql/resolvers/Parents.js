@@ -54,7 +54,7 @@ module.exports = {
           ['hour', 1],
           ['date', 1],
         ]);
-        if (messages.length > 1) {
+        if (messages.length > 0) {
           return messages[messages.length - 1].message;
         }
         return null;
