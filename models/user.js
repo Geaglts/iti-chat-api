@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const { config } = require('../config');
 
 const generateErrorMessage = require('../utils/generateErrorMessage');
@@ -24,6 +25,16 @@ const userSchema = new Schema(
           return re.test(v);
         },
         message: 'Este correo no es valido',
+      },
+    },
+    password: {
+      type: String,
+      required: [true, generateErrorMessage('contraseña', 'required')],
+      validate: {
+        validator: function (v) {
+          return v.length > 8;
+        },
+        message: 'La contraseña debe tener más de 8 letras',
       },
     },
     phone: {
@@ -76,6 +87,10 @@ const userSchema = new Schema(
 
 userSchema.pre('save', async function (next) {
   if (this.isNew) {
+    // Password
+    const newPassword = await bcrypt.hash(this.password, 11);
+    this.password = newPassword;
+    // Set name
     if (this.name === undefined) {
       this.name = this.email.split('@')[0];
     }
@@ -110,6 +125,18 @@ userSchema.pre('save', async function (next) {
   }
   next();
 });
+
+userSchema.methods.verifyPassword = async function (password) {
+  try {
+    const match = await bcrypt.compare(password, this.password);
+    if (match) {
+      this.token = jwt.sign({ userId: this._id }, config.publicJwtSecret);
+    }
+    return match;
+  } catch (error) {
+    throw new Error('What?');
+  }
+};
 
 const userModel = model('User', userSchema, 'users');
 

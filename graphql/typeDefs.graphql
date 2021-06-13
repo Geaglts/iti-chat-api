@@ -35,6 +35,7 @@ input NewUserInput {
   name: String
   email: String!
   phone: String!
+  password: String!
   contacts: [ContactInput]
 }
 
@@ -80,7 +81,7 @@ type Mutation {
   updateUser(input: UpdateUserInput!): User!
   updateContacts(input: UpdateContactsInput!): Boolean!
   # Revisa si el usuario tiene una cuenta
-  hasAccount(phone: String!): JSON
+  newSession(user: String!, password: String!): JSON
 }
 
 # Subscriptions

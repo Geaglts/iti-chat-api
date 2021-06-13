@@ -10,11 +10,19 @@ const context = async (req, res) => {
     const token = authorization.replace('Bearer ', '');
     const validToken = jwt.verify(token, config.publicJwtSecret);
     const user = await User.findById(validToken.userId);
+    // Same tokens
+    if (user.token === token) {
+      return {
+        req,
+        res,
+        pubsub,
+        user,
+      };
+    }
     return {
       req,
       res,
       pubsub,
-      user,
     };
   } catch {
     return {

@@ -72,15 +72,27 @@ module.exports = {
       return false;
     }
   },
-  async hasAccount(_, { phone }) {
+  async newSession(_, { user, password }) {
     try {
-      const userExists = await User.findOne({ phone }).select(['_id']);
+      const userExists = await User.findOne({
+        $or: [{ phone: user }, { email: user }],
+      }).select(['_id', 'password', 'token']);
       if (userExists) {
-        return { userId: userExists._id, status: true };
+        const matchPassword = await userExists.verifyPassword(password);
+        if (matchPassword) {
+          await userExists.save();
+          return {
+            userId: userExists._id,
+            token: userExists.token,
+            status: true,
+          };
+        }
+        return false;
       } else {
         return { status: false };
       }
-    } catch {
+    } catch (error) {
+      console.log(error);
       return null;
     }
   },
