@@ -50,7 +50,6 @@ input EnviarMensageInput {
 }
 
 input UpdateContactsInput {
-  userId: ID!
   contacts: [ContactInput]
 }
 
@@ -79,8 +78,9 @@ type Mutation {
   createUser(input: NewUserInput!): User!
   # Actualiza los datos de un usuario
   updateUser(input: UpdateUserInput!): User!
-  updateContacts(input: UpdateContactsInput!): Boolean!
-  # Revisa si el usuario tiene una cuenta
+  # Actualiza los contactos de los usuarios
+  updateContacts(input: UpdateContactsInput!): Boolean
+  # Genera una nueva sesión
   newSession(user: String!, password: String!): JSON
 }
 
