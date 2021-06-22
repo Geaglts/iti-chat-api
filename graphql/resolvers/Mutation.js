@@ -89,4 +89,12 @@ module.exports = {
       return null;
     }
   },
+  async hasAccount(parent, { phone }, context) {
+    try {
+      const userExists = await User.countDocuments({ phone });
+      return userExists > 0;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
 };

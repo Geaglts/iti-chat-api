@@ -81,6 +81,8 @@ type Mutation {
   updateContacts(input: UpdateContactsInput!): Boolean
   # Genera una nueva sesión
   newSession(user: String!, password: String!): JSON
+  # Verifica que el usuario tiene una cuenta
+  hasAccount(phone: String!): Boolean
 }
 
 # Subscriptions
