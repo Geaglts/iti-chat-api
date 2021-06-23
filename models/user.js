@@ -69,6 +69,10 @@ const userSchema = new Schema(
         phone: {
           type: String,
         },
+        reset: {
+          type: Boolean,
+          default: false,
+        },
       },
     ],
     messages: [
