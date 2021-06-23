@@ -40,15 +40,13 @@ module.exports = {
         console.log(error);
       }
     },
-    async lastMessage(parent, args, { user }) {
+    async lastMessage({ phone }, args, { user }) {
       try {
-        const { _id } = await User.findOne({ phone: parent.phone }).select(
-          ['_id']
-        );
+        const { _id } = await User.findOne({ phone }).select(['_id']);
         const messages = await Message.find({
-          $and: [
-            { $or: [{ to: user._id }, { from: user._id }] },
-            { $or: [{ to: _id }, { from: _id }] },
+          $or: [
+            { $and: [{ from: user.id }, { to: _id }] },
+            { $and: [{ to: user.id }, { from: _id }] },
           ],
         }).sort([
           ['hour', 1],

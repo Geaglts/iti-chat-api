@@ -35,7 +35,6 @@ module.exports = {
         ['date', 1],
         ['hour', 1],
       ]);
-      console.log(messages);
       return messages;
     } catch (error) {
       return null;
