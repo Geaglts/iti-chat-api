@@ -61,7 +61,6 @@ const userSchema = new Schema(
       {
         alias: {
           type: String,
-          required: [true, generateErrorMessage('contacto', 'required')],
         },
         status: {
           type: String,
@@ -69,7 +68,6 @@ const userSchema = new Schema(
         },
         phone: {
           type: String,
-          required: [true, generateErrorMessage('contacto', 'required')],
         },
       },
     ],
