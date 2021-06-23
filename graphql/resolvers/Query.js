@@ -27,14 +27,15 @@ module.exports = {
     try {
       if (!user) return null;
       const messages = await Message.find({
-        $and: [
-          { $or: [{ to: user._id }, { from: user._id }] },
-          { $or: [{ to: contactId }, { from: contactId }] },
+        $or: [
+          { $and: [{ from: user.id }, { to: contactId }] },
+          { $and: [{ to: user.id }, { from: contactId }] },
         ],
       }).sort([
         ['date', 1],
         ['hour', 1],
       ]);
+      console.log(messages);
       return messages;
     } catch (error) {
       return null;
