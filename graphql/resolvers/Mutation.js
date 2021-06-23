@@ -56,11 +56,11 @@ module.exports = {
           // Si el usuario no esta registrado, agregalo
           if (!userRegister) {
             user.contacts.push(contact);
-            await user.save();
           }
         }
       }
-      return true;
+      await user.save();
+      return user.contacts;
     } catch (error) {
       console.log(error);
       return false;
@@ -93,6 +93,13 @@ module.exports = {
     try {
       const userExists = await User.countDocuments({ phone });
       return userExists > 0;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
+  async verifyToken(parent, args, { user }) {
+    try {
+      return Boolean(user);
     } catch (error) {
       throw new Error(error);
     }
