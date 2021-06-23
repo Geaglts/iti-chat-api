@@ -104,4 +104,18 @@ module.exports = {
       throw new Error(error);
     }
   },
+  async dropMessages(parent, { contactId }, { user }) {
+    if (!user) return null;
+    try {
+      await Message.deleteMany({
+        $or: [
+          { $and: [{ from: user.id }, { to: contactId }] },
+          { $and: [{ to: user.id }, { from: contactId }] },
+        ],
+      });
+      return true;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
 };
