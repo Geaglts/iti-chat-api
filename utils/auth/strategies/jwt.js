@@ -13,12 +13,13 @@ passport.use(
     },
     async function (tokenPayload, done) {
       try {
-        const user = await User.findById(tokenPayload.userId);
+        const user = await User.findById(tokenPayload.userId).select([
+          '-password',
+        ]);
         if (!user) {
           return done(boom.unauthorized(), false);
         }
-        delete user.password;
-        return done(null, { ...user });
+        return done(null, user);
       } catch (error) {
         done(error);
       }

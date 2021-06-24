@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const passport = require('passport');
-const User = require('../models/user');
 
 // Strategies
 require('../utils/auth/strategies/jwt');
@@ -19,8 +18,14 @@ function contactApi(app) {
     '/auto-reset/:id',
     passport.authenticate('jwt', { session: false }),
     validationHandler({ id: contactIdSchema }, 'params'),
-    (req, res) => {
+    async (req, res) => {
+      const { id } = req.params;
       try {
+        const contacts = req.user.contacts;
+        const contact = contacts.findIndex((c) => String(c._id) === id);
+        contacts[contact].reset = true;
+        req.user.contacts = contacts;
+        await req.user.save();
         res.json({ message: 'Thanks' });
       } catch (error) {
         console.log(error);
