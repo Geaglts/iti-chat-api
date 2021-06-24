@@ -25,6 +25,7 @@ type Contact {
   id: ID!
   alias: String!
   status: Int!
+  reset: Boolean!
   phone: String!
   user: User
   lastMessage: String

@@ -23,10 +23,10 @@ function contactApi(app) {
       try {
         const contacts = req.user.contacts;
         const contact = contacts.findIndex((c) => String(c._id) === id);
-        contacts[contact].reset = true;
+        contacts[contact].reset = !contacts[contact].reset;
         req.user.contacts = contacts;
         await req.user.save();
-        res.json({ message: 'Thanks' });
+        res.json({ message: `Auto reset: ${contacts[contact].reset}` });
       } catch (error) {
         console.log(error);
         res.json({ message: 'Error! D:' });
