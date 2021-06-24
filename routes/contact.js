@@ -1,5 +1,9 @@
 const { Router } = require('express');
+const passport = require('passport');
 const User = require('../models/user');
+
+// Strategies
+require('../utils/auth/strategies/jwt');
 
 // utils
 const validationHandler = require('../utils/middleware/validationHandler');
@@ -13,6 +17,7 @@ function contactApi(app) {
 
   router.put(
     '/auto-reset/:id',
+    passport.authenticate('jwt', { session: false }),
     validationHandler({ id: contactIdSchema }, 'params'),
     (req, res) => {
       try {
