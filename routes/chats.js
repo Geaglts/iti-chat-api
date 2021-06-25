@@ -34,7 +34,7 @@ function chatsApi(app) {
   );
 
   router.put(
-    '/change-status/:contactId',
+    '/read-messages/:contactId',
     passport.authenticate('jwt', { session: false }),
     tokenValidation,
     validationHandler({ contactId: contactIdSchema }, 'params'),
@@ -42,15 +42,10 @@ function chatsApi(app) {
       const { id: userId } = req.user;
       const { contactId } = req.params;
       try {
-        Message.updateMany(
+        await Message.updateMany(
           {
             $and: [
-              {
-                $or: [
-                  { to: userId, from: contactId },
-                  { to: contactId, from: userId },
-                ],
-              },
+              { to: userId, from: contactId },
               { readByReceiver: false },
             ],
           },
