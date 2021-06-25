@@ -63,7 +63,7 @@ function chatsApi(app) {
     }
   );
 
-  router.put(
+  router.get(
     '/unread-messages/:contactId',
     passport.authenticate('jwt', { session: false }),
     tokenValidation,
@@ -72,7 +72,7 @@ function chatsApi(app) {
       const { id: userId } = req.user;
       const { contactId } = req.params;
       try {
-        const unreadMessages = Message.countDocuments({
+        const unreadMessages = await Message.countDocuments({
           $and: [
             { to: userId, from: contactId },
             { readByReceiver: false },
