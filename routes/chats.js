@@ -1,7 +1,7 @@
 const debug = require('debug')('app:routes/chats');
 const { Router } = require('express');
 const passport = require('passport');
-const User = require('../models/user');
+const Message = require('../models/message');
 
 // Strategies
 require('../utils/auth/strategies/jwt');
@@ -17,9 +17,11 @@ function chatsApi(app) {
     '/drop-chats',
     passport.authenticate('jwt', { session: false }),
     tokenValidation,
-    (req, res) => {
+    async (req, res) => {
       try {
-        debug('Todo esta funcionando bien');
+        await Message.deleteMany({
+          $or: [{ from: req.user.id }, { to: req.user.id }],
+        });
         res.json({ message: 'Mensajes eliminados' });
       } catch (error) {
         debug(error);
