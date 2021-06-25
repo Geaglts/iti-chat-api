@@ -5,6 +5,7 @@ const server = require('./graphql');
 const app = express();
 
 const contactsApi = require('./routes/contacts');
+const chatsApi = require('./routes/chats');
 
 // config
 const { config } = require('./config');
@@ -40,9 +41,10 @@ server.installSubscriptionHandlers(httpServer);
 
 // routes
 contactsApi(app);
+chatsApi(app);
 
 app.use('*', (req, res) => {
-  res.status(404).json({ codigo: 'Not Found' });
+  res.status(404).json({ message: 'Not Found', status: res.statusCode });
 });
 
 module.exports = { app, httpServer };
