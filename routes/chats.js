@@ -73,8 +73,10 @@ function chatsApi(app) {
       const { contactId } = req.params;
       try {
         const unreadMessages = Message.countDocuments({
-          to: userId,
-          from: contactId,
+          $and: [
+            { to: userId, from: contactId },
+            { readByReceiver: false },
+          ],
         });
         res.json({ unreadMessages, message: 'Mensajes no leidos' });
       } catch (error) {
