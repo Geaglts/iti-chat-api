@@ -11,7 +11,7 @@ const tokenValidation = require('../utils/middleware/tokenValidation');
 // schemas
 const { contactIdSchema } = require('../utils/schema/contact');
 
-function contactApi(app) {
+function contactsApi(app) {
   const router = Router();
   app.use('/api/contacts', router);
 
@@ -37,4 +37,4 @@ function contactApi(app) {
   );
 }
 
-module.exports = contactApi;
+module.exports = contactsApi;

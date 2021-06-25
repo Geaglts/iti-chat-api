@@ -22,7 +22,7 @@
     "passport-jwt": "^4.0.0"
   },
   "scripts": {
-    "dev": "nodemon -e js,graphql,json index.js",
+    "dev": "DEBUG=app:* nodemon -e js,graphql,json index.js",
     "start": "node index.js"
   },
   "repository": {

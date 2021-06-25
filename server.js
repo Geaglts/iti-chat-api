@@ -4,7 +4,7 @@ const server = require('./graphql');
 
 const app = express();
 
-const contactApi = require('./routes/contact');
+const contactsApi = require('./routes/contacts');
 
 // config
 const { config } = require('./config');
@@ -39,7 +39,7 @@ const httpServer = createServer(app);
 server.installSubscriptionHandlers(httpServer);
 
 // routes
-contactApi(app);
+contactsApi(app);
 
 app.use('*', (req, res) => {
   res.status(404).json({ codigo: 'Not Found' });
