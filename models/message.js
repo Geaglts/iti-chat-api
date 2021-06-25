@@ -17,6 +17,11 @@ const messageSchema = new Schema({
     required: true,
     default: '00/00/0000',
   },
+  readByReceiver: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
   state: {
     type: Number,
     required: true,
