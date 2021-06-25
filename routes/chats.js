@@ -39,8 +39,44 @@ function chatsApi(app) {
     tokenValidation,
     validationHandler({ contactId: contactIdSchema }, 'params'),
     async (req, res) => {
+      const { id: userId } = req.user;
+      const { contactId } = req.params;
       try {
+        Message.updateMany(
+          {
+            $and: [
+              {
+                $or: [
+                  { to: userId, from: contactId },
+                  { to: contactId, from: userId },
+                ],
+              },
+              { readByReceiver: false },
+            ],
+          },
+          { readByReceiver: true }
+        );
         res.json({ message: 'Mesajes actualizados', status: true });
+      } catch (error) {
+        debug(error);
+      }
+    }
+  );
+
+  router.put(
+    '/unread-messages/:contactId',
+    passport.authenticate('jwt', { session: false }),
+    tokenValidation,
+    validationHandler({ contactId: contactIdSchema }, 'params'),
+    async (req, res) => {
+      const { id: userId } = req.user;
+      const { contactId } = req.params;
+      try {
+        const unreadMessages = Message.countDocuments({
+          to: userId,
+          from: contactId,
+        });
+        res.json({ unreadMessages, message: 'Mensajes no leidos' });
       } catch (error) {
         debug(error);
       }
